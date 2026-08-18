@@ -1,1 +1,24 @@
-<html><head><meta name="viewport" content="width=device-width"></head><body><video controls autoplay muted playsinline name="media" crossorigin="anonymous"><source src="https://i.nuuls.com/_NbxQ.mp4" type="video/mp4"></video></body></html>>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width">
+</head>
+<body>
+  
+  <video id="miVideo" controls autoplay muted playsinline name="media">
+    <source src="https://i.nuuls.com/_NbxQ.mp4" type="video/mp4">
+  </video>
+
+  <script>
+    // Este código permite que el video se reproduzca o pause al hacer clic en cualquier parte de él
+    const video = document.getElementById('miVideo');
+    video.addEventListener('click', function() {
+      if (video.paused) {
+        video.play();
+      } else {
+        video.pause();
+      }
+    });
+  </script>
+
+</body>
+</html>
