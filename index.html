@@ -2,8 +2,19 @@
 <head>
   <meta name="viewport" content="width=device-width">
   <style>
-    body { margin: 0; background-color: #000; display: flex; justify-content: center; align-items: center; height: 100vh; }
-    video { max-width: 100%; max-height: 100%; }
+    body { 
+      margin: 0; 
+      background-color: #000; 
+      display: flex; 
+      justify-content: center; 
+      align-items: center; 
+      height: 100vh; 
+      overflow: hidden;
+    }
+    video { 
+      max-width: 100%; 
+      max-height: 100%; 
+    }
   </style>
 </head>
 <body>
@@ -15,30 +26,27 @@
   <script>
     const video = document.getElementById('miVideo');
 
-    // Configurar volumen al máximo (1.0 = 100%)
-    video.volume = 1.0;
+    // Al reproducirse el video, desactiva el silencio y sube el volumen al 100%
+    video.addEventListener('play', () => {
+      video.muted = false;
+      video.volume = 1.0;
+    });
 
-    function activarAudio() {
+    // Forzar inicio instantáneo
+    function forzarReproduccionConAudio() {
       video.muted = false;
       video.volume = 1.0;
       video.play();
-      // Desactivar los detectores una vez encendido el audio
-      ['click', 'touchstart', 'mousemove', 'scroll', 'keydown'].forEach(evt => {
-        document.removeEventListener(evt, activarAudio);
-      });
     }
 
-    // Intentar reproducir directamente con sonido
+    // Intenta reproducir con sonido inmediatamente
     video.play().then(() => {
       video.muted = false;
       video.volume = 1.0;
     }).catch(() => {
-      // Si el navegador lo frena, arranca silenciado y activa el audio en el primer micro-gesto
-      video.muted = true;
-      video.play();
-
-      ['click', 'touchstart', 'mousemove', 'scroll', 'keydown'].forEach(evt => {
-        document.addEventListener(evt, activarAudio, { once: true });
+      // Si el navegador requiere interacción previa, activa el audio al primer toque/clic
+      ['click', 'touchstart', 'pointerdown'].forEach(evt => {
+        document.addEventListener(evt, forzarReproduccionConAudio, { once: true });
       });
     });
   </script>
